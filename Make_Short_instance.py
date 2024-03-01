@@ -29,10 +29,8 @@ def parse_args():
 
 def main(opt) -> None:
     gt = utils.load_json(opt.input)
-    images_num_list = list(set(ann["image_id"] for ann in gt["annotations"]))
-    random.shuffle(images_num_list)
-    images_num_list = images_num_list[:4]
-
+    # the 3 images are few annotations
+    images_num_list = [147293, 141108, 323202]
     gt = remove_images(gt, images_num_list)
     gt = remove_annotations(gt, images_num_list)
 
