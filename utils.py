@@ -29,3 +29,6 @@ def union_cal(bbox1, bbox2):
         bbox1_area = (bbox1_x2 - bbox1_x1) * (bbox1_y2 - bbox1_y1)
         bbox2_area = (bbox2_x2 - bbox2_x1) * (bbox2_y2 - bbox2_y1)
         return bbox1_area + bbox2_area - intersection_cal(bbox1, bbox2)
+    
+def iou_cal(bbox1, bbox2):
+    return intersection_cal(bbox1, bbox2) / union_cal(bbox1, bbox2)
