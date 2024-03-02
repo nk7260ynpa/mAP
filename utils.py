@@ -1,4 +1,5 @@
 import json
+import random
 
 def load_json(file, mode='r'):
     with open(file, mode) as f:
@@ -31,4 +32,26 @@ def union_cal(bbox1, bbox2):
         return bbox1_area + bbox2_area - intersection_cal(bbox1, bbox2)
     
 def iou_cal(bbox1, bbox2):
-    return intersection_cal(bbox1, bbox2) / union_cal(bbox1, bbox2)
+    return intersection_cal(bbox1, bbox2) / (union_cal(bbox1, bbox2)+0.00001)
+
+def xywh_to_xyxy(bbox):
+    x, y, w, h = bbox
+    return [x, y, x + w, y + h]
+
+def gen_fake_bbox(bbox, AP_Level=0.5):
+    x1, y1, x2, y2 = bbox
+    w = x2 - x1
+    h = y2 - y1
+    while True:
+        x1 = x1 + x1 * random.uniform(-0.2, 0.2)
+        y1 = y1 + y1 * random.uniform(-0.2, 0.2)
+        x2 = x2 + x2 * random.uniform(-0.2, 0.2)
+        y2 = y2 + y2 * random.uniform(-0.2, 0.2)
+        x1 = max(0, x1)
+        y1 = max(0, y1)
+        x2 = max(0, x2)
+        y2 = max(0, y2)
+        if iou_cal(bbox, [x1, y1, x2, y2]) > AP_Level:
+            break
+    return [x1, y1, x2, y2]
+
