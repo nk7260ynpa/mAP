@@ -38,7 +38,7 @@ def xywh_to_xyxy(bbox):
     x, y, w, h = bbox
     return [x, y, x + w, y + h]
 
-def gen_fake_bbox(bbox, AP_Level=0.5):
+def gen_true_fake_bbox(bbox, img_size, AP_Level=0.5):
     x1, y1, x2, y2 = bbox
     w = x2 - x1
     h = y2 - y1
@@ -49,9 +49,16 @@ def gen_fake_bbox(bbox, AP_Level=0.5):
         y2 = y2 + y2 * random.uniform(-0.2, 0.2)
         x1 = max(0, x1)
         y1 = max(0, y1)
-        x2 = max(0, x2)
-        y2 = max(0, y2)
+        x2 = min(img_size[0], x2)
+        y2 = min(img_size[1], y2)
         if iou_cal(bbox, [x1, y1, x2, y2]) > AP_Level:
             break
+    return [x1, y1, x2, y2]
+
+def gen_random_fake_bbox(img_size, AP_Level=0.5):
+    x1 = random.randint(0, img_size[0]-1)
+    y1 = random.randint(0, img_size[1]-1)
+    x2 = random.randint(x1+1, img_size[0])
+    y2 = random.randint(y1+1, img_size[1])
     return [x1, y1, x2, y2]
 

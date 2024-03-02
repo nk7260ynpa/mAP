@@ -31,9 +31,19 @@ def test_xywh_to_xyxy():
     bbox = [10, 50, 100, 150]
     assert utils.xywh_to_xyxy(bbox) == [10, 50, 110, 200]
 
-def test_gen_fake_bbox():
+def test_gen_true_fake_bbox():
     for i in range(100):
         bbox = [10, 50, 100, 150]
-        fake_bbox = utils.gen_fake_bbox(bbox)
+        fake_bbox = utils.gen_true_fake_bbox(bbox, img_size=[110, 160])
         assert utils.iou_cal(bbox, fake_bbox) > 0.5
+
+def test_gen_random_fake_bbox():
+    for i in range(100):
+        fake_bbox = utils.gen_random_fake_bbox(img_size=[110, 160])
+        assert fake_bbox[0] < fake_bbox[2]
+        assert fake_bbox[1] < fake_bbox[3]
+        assert fake_bbox[0] >= 0
+        assert fake_bbox[1] >= 0
+        assert fake_bbox[2] <= 110
+        assert fake_bbox[3] <= 160
 
