@@ -38,6 +38,10 @@ def xywh_to_xyxy(bbox):
     x, y, w, h = bbox
     return [x, y, x + w, y + h]
 
+def xyxy_to_xywh(bbox):
+    x1, y1, x2, y2 = bbox
+    return [x1, y1, x2 - x1, y2 - y1]
+
 def gen_true_fake_bbox(bbox, img_size, AP_Level=0.5):
     x1, y1, x2, y2 = bbox
     w = x2 - x1
@@ -55,10 +59,22 @@ def gen_true_fake_bbox(bbox, img_size, AP_Level=0.5):
             break
     return [x1, y1, x2, y2]
 
-def gen_random_fake_bbox(img_size, AP_Level=0.5):
+def gen_random_fake_bbox(img_size):
     x1 = random.randint(0, img_size[0]-1)
     y1 = random.randint(0, img_size[1]-1)
     x2 = random.randint(x1+1, img_size[0])
     y2 = random.randint(y1+1, img_size[1])
     return [x1, y1, x2, y2]
+
+def load_img_data(images_info, img_num):
+    for image_info in images_info:
+        if image_info["id"] == img_num:
+            return image_info
+        
+def load_ann_data(ann_info, img_num):
+    ann_list = []
+    for ann in ann_info:
+        if ann["image_id"] == img_num:
+            ann_list.append(ann)
+    return ann_list
 
