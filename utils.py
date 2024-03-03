@@ -47,10 +47,10 @@ def gen_true_fake_bbox(bbox, img_size, AP_Level=0.5):
     w = x2 - x1
     h = y2 - y1
     while True:
-        x1 = x1 + x1 * random.uniform(-0.2, 0.2)
-        y1 = y1 + y1 * random.uniform(-0.2, 0.2)
-        x2 = x2 + x2 * random.uniform(-0.2, 0.2)
-        y2 = y2 + y2 * random.uniform(-0.2, 0.2)
+        x1 = x1 + w * random.uniform(-0.2, 0.2)
+        y1 = y1 + h * random.uniform(-0.2, 0.2)
+        x2 = x2 + w * random.uniform(-0.2, 0.2)
+        y2 = y2 + h * random.uniform(-0.2, 0.2)
         x1 = max(0, x1)
         y1 = max(0, y1)
         x2 = min(img_size[0], x2)
@@ -60,21 +60,44 @@ def gen_true_fake_bbox(bbox, img_size, AP_Level=0.5):
     return [x1, y1, x2, y2]
 
 def gen_random_fake_bbox(img_size):
-    x1 = random.randint(0, img_size[0]-1)
-    y1 = random.randint(0, img_size[1]-1)
-    x2 = random.randint(x1+1, img_size[0])
-    y2 = random.randint(y1+1, img_size[1])
+    x1 = round(random.uniform(0, img_size[0]-1), 2)
+    y1 = round(random.uniform(0, img_size[1]-1), 2)
+    x2 = round(random.uniform(x1+1, img_size[0]), 2)
+    y2 = round(random.uniform(y1+1, img_size[1]), 2)
     return [x1, y1, x2, y2]
 
 def load_img_data(images_info, img_num):
     for image_info in images_info:
-        if image_info["id"] == img_num:
+        if image_info["id"] == int(img_num):
             return image_info
+    #return image_info
         
 def load_ann_data(ann_info, img_num):
     ann_list = []
     for ann in ann_info:
-        if ann["image_id"] == img_num:
+        if ann["image_id"] == int(img_num):
             ann_list.append(ann)
     return ann_list
+
+def decimal_2_bbox(bbox):
+    return [round(i, 2) for i in bbox]
+
+def gen_predict_label(image_id, category_id, bbox):
+    assert isinstance(image_id, int), "image_id must be int"
+    assert isinstance(category_id, int), "category_id must be int"
+    assert isinstance(bbox, list), "bbox must be list"
+    
+    bbox = decimal_2_bbox(bbox)
+    result = {
+        "image_id": image_id,
+        "category_id": category_id,
+        "bbox": bbox,
+        "score": round(random.uniform(0, 1), 3)}
+    return result
+
+def liststr_to_listint(liststr):
+    return [int(i) for i in liststr]
+
+    
+
 
