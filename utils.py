@@ -98,6 +98,9 @@ def gen_predict_label(image_id, category_id, bbox):
 def liststr_to_listint(liststr):
     return [int(i) for i in liststr]
 
+def listfloat_to_listint(liststr):
+    return [int(i) for i in liststr]
+
     
 
 

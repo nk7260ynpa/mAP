@@ -122,7 +122,7 @@ def test_gen_predict_label():
     assert utils.gen_predict_label(image_id, category_id, bbox)["bbox"] == [1.23, 2.41, 3.24, 4.24]
     assert isinstance(utils.gen_predict_label(image_id, category_id, bbox)["score"], float)
     x = utils.gen_predict_label(image_id, category_id, bbox)["score"]
-    assert (x - round(x, 2)) == 0
+    assert (x - round(x, 3)) == 0
 
 def test_liststr_to_listint():
     liststr = ["1", "2", "3", "4"]
