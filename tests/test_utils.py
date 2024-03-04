@@ -112,16 +112,16 @@ def test_decimal_2_bbox():
     bbox = [1.234, 2.345, 3.456, 4.567]
     assert utils.decimal_2_bbox(bbox) == [1.23, 2.35, 3.46, 4.57]
 
-def test_gen_predict_label():
+def test_gen_predict_ann():
     image_id = 1
     category_id = 2
     bbox = [1.2313, 2.4123431, 3.24214, 4.242424]
     score = 0.5
-    assert utils.gen_predict_label(image_id, category_id, bbox)["image_id"] == 1
-    assert utils.gen_predict_label(image_id, category_id, bbox)["category_id"] == 2
-    assert utils.gen_predict_label(image_id, category_id, bbox)["bbox"] == [1.23, 2.41, 3.24, 4.24]
-    assert isinstance(utils.gen_predict_label(image_id, category_id, bbox)["score"], float)
-    x = utils.gen_predict_label(image_id, category_id, bbox)["score"]
+    assert utils.gen_predict_ann(image_id, category_id, bbox)["image_id"] == 1
+    assert utils.gen_predict_ann(image_id, category_id, bbox)["category_id"] == 2
+    assert utils.gen_predict_ann(image_id, category_id, bbox)["bbox"] == [1.23, 2.41, 3.24, 4.24]
+    assert isinstance(utils.gen_predict_ann(image_id, category_id, bbox)["score"], float)
+    x = utils.gen_predict_ann(image_id, category_id, bbox)["score"]
     assert (x - round(x, 3)) == 0
 
 def test_liststr_to_listint():

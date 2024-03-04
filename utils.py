@@ -43,10 +43,10 @@ def xyxy_to_xywh(bbox):
     return [x1, y1, x2 - x1, y2 - y1]
 
 def gen_true_fake_bbox(bbox, img_size, AP_Level=0.5):
-    x1, y1, x2, y2 = bbox
-    w = x2 - x1
-    h = y2 - y1
     while True:
+        x1, y1, x2, y2 = bbox
+        w = x2 - x1
+        h = y2 - y1
         x1 = x1 + w * random.uniform(-0.2, 0.2)
         y1 = y1 + h * random.uniform(-0.2, 0.2)
         x2 = x2 + w * random.uniform(-0.2, 0.2)
@@ -82,7 +82,7 @@ def load_ann_data(ann_info, img_num):
 def decimal_2_bbox(bbox):
     return [round(i, 2) for i in bbox]
 
-def gen_predict_label(image_id, category_id, bbox):
+def gen_predict_ann(image_id, category_id, bbox):
     assert isinstance(image_id, int), "image_id must be int"
     assert isinstance(category_id, int), "category_id must be int"
     assert isinstance(bbox, list), "bbox must be list"
